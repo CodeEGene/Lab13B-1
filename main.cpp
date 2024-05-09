@@ -18,23 +18,20 @@ daysInMonth – determines the number of days in a specified month
 @return either 28, 29, 30, or 31, based on month and (leap) year
 */
 
-int userInput;
+int year, month;
+
+string months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
 int main() {
 	do {
-		cout << "Enter a year or Q to quit: ";
-		cin >> userInput;
+		cout << "Enter a month and year or Q to quit: ";
+		cin >> month >> year;
 
 		try {
-			if (isLeapYear(userInput)) {
-				cout << userInput << " is a leap year." << endl;
-			}
-			else {
-				cout << userInput << " is not a leap year." << endl;
-			}
+			cout << months[month-1] << " " << year << " has " << daysInMonth(month, year) << " days." << endl;
 		}
-		catch (...) {
-			cout << "The number needs to be an integer => 1582" << endl;
+		catch (range_error& e) {
+			cout << e.what() << endl;
 		}
 	} while (!cin.fail());
 	
@@ -45,7 +42,7 @@ int main() {
 bool isLeapYear(int year) {
 	
 	if (year < 1582) {
-		throw (1582);
+		throw range_error("The number needs to be an integer => 1582");
 	}
 	else if (year % 100 == 0) {
 		if (year % 400 == 0) {
@@ -62,6 +59,7 @@ bool isLeapYear(int year) {
 }
 
 int daysInMonth(int month, int year) {
+	isLeapYear(year);
 	switch (month) {
 
 	case 1:
@@ -94,6 +92,6 @@ int daysInMonth(int month, int year) {
 	case 12:
 		return 31;
 	default:
-		throw (0);
+		throw range_error("Months are represented by 1-12");
 	}
 }
