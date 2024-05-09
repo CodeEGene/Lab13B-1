@@ -10,8 +10,26 @@ under the Gregorian calendar.
 @return true if year is a leap year; false otherwise
 */
 
-int main() {
+int userInput;
 
+int main() {
+	do {
+		cout << "Enter a year or Q to quit: ";
+		cin >> userInput;
+
+		try {
+			if (isLeapYear(userInput)) {
+				cout << userInput << " is a leap year." << endl;
+			}
+			else {
+				cout << userInput << " is not a leap year." << endl;
+			}
+		}
+		catch (...) {
+			cout << "The number needs to be an integer => 1582" << endl;
+		}
+	} while (!cin.fail());
+	
 
 	return 0;
 }
