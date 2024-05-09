@@ -18,17 +18,35 @@ daysInMonth – determines the number of days in a specified month
 @return either 28, 29, 30, or 31, based on month and (leap) year
 */
 
-int year, month;
+int dayOfWeek(int month, int day, int year);
+/**
+dayOfWeek - Computes the weekday of a given date.
+@param year the year
+@param month the month (1 = January ... 12 = December)
+@param day the day of the month
+@return the weekday (0 = Saturday ... 6 = Friday)
+*/
+int dayOfWeek(int month, int day, int year);
+/**
+dayOfWeek - Computes the weekday of a given date.
+@param year the year
+@param month the month (1 = January ... 12 = December)
+@param day the day of the month
+@return the weekday (0 = Saturday ... 6 = Friday)
+*/
+
+int year, month, day;
 
 string months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+string days[7] = { "Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
 
 int main() {
 	do {
-		cout << "Enter a month and year or Q to quit: ";
-		cin >> month >> year;
+		cout << "Enter a date or Q to quit: ";
+		cin >> month >> day >> year;
 
 		try {
-			cout << months[month-1] << " " << year << " has " << daysInMonth(month, year) << " days." << endl;
+			cout << days[dayOfWeek(month, day, year)] << ", " << months[month - 1] << " " << day << ", " << year << endl;
 		}
 		catch (range_error& e) {
 			cout << e.what() << endl;
@@ -94,4 +112,16 @@ int daysInMonth(int month, int year) {
 	default:
 		throw range_error("Months are represented by 1-12");
 	}
+}
+
+int dayOfWeek(int month, int day, int year) {
+	int Y;
+	if (month < 3) {
+		Y = year - 1;
+	}
+	else {
+		Y = year;
+	}
+	int h = (day + floorf((month + 1) * 26 / 10) + Y + floorf(Y / 4) + 6 * floorf(Y / 100) + floorf(Y / 400));
+	return h%7;
 }
